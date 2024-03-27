@@ -10,13 +10,19 @@ phases:
       - export NVM_DIR="$HOME/.nvm"
       - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
       - nvm install lts/erbium
+      - echo Logging in to Oracle Registry...
+      - echo "wTfZ8s+R#R-f.B5F2wv)" |docker login iad.ocir.io -u idi1o0a010nx/oracleidentitycloudservice/ANDRESSA.DOS.SIQUEIRA@ORACLE.COM --password-stdin
+
+  build:
   build:
     commands:
       - npm install
       - npm test
       - cd ..
       - cd node_express
-      - docker build --pull --rm -t node-express-getting-starter .
-artifacts:
-  files:
-    - node_express-getting-starter:latest
+      - docker build iad.ocir.io/di1o0a010nx/imagens/node-express-getting-starter .  
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push iad.ocir.io/di1o0a010nx/imagens/node-express-getting-starter
